@@ -1,0 +1,5 @@
+En este ejercicio hemos medido cuánto tarda el sistema en verificar el inicio de sesión de un usuario 100 veces. Utilizando el sistema completo de Django (ORM), el tiempo total ha sido de 49.27 segundos, mientras que haciéndolo de forma manual mediante SQL y verificando la contraseña por separado, el tiempo ha sido de 53.45 segundos.
+
+La conclusión más importante es que, en este caso, el uso del ORM no supone una pérdida de rendimiento significativa frente al SQL. Aunque en el ejercicio anterior el ORM era mucho más lento, aquí la diferencia es mínima porque casi todo el tiempo de ejecución (el 99%) se consume en el procesador del ordenador calculando el algoritmo de seguridad de la contraseña, y no en la consulta a la base de datos.
+
+Por lo tanto, para tareas que requieren mucha capacidad de cálculo (como la criptografía o el login), no merece la pena intentar optimizar las consultas SQL, ya que el cuello de botella está en la CPU y no en cómo accedemos a los datos. En estas situaciones, es mucho mejor usar las herramientas nativas de Django por la seguridad que aportan.

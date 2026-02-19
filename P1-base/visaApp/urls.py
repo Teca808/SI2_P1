@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path
 from visaApp.views import (aportarinfo_tarjeta, aportarinfo_pago,
-                           testbd, getpagos, delpago)
+                           testbd, getpagos, delpago, api_tarjetas)
 
 urlpatterns = [
     path("", aportarinfo_tarjeta, name="index"),
@@ -25,4 +25,5 @@ urlpatterns = [
     path("testbd/", testbd, name="testbd"),
     path("testbd/getpagos/", getpagos, name="getpagos"),
     path("testbd/delpago/", delpago, name="delpago"),
+    path("api/tarjetas/", api_tarjetas, name="api_tarjetas"),
 ]

@@ -2,6 +2,10 @@ from django.shortcuts import redirect, render
 from visaApp.forms import PagoForm, TarjetaForm, DelPagoForm, GetPagosForm
 from visaApp.pagoDB import (verificar_tarjeta, registrar_pago,
                             eliminar_pago, get_pagos_from_db)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from visaApp.models import Tarjeta
+from visaApp.serializers import TarjetaSerializer
 
 
 TITLE = '(visaSite)'
@@ -134,3 +138,13 @@ def getpagos(request):
             pagos = get_pagos_from_db(idComercio)
             return render(request, 'template_get_pagos_result.html',
                           {'result': pagos, 'title': TITLE})
+
+@api_view(['GET'])
+def api_tarjetas(request):
+    """
+    Esta vista devuelve los datos puros en JSON en lugar de HTML.
+    Cogemos las primeras 50 tarjetas para no saturar la pantalla.
+    """
+    tarjetas = Tarjeta.objects.all()[:50]
+    serializer = TarjetaSerializer(tarjetas, many=True) # Traduce la lista entera
+    return Response(serializer.data)
