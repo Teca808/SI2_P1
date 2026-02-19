@@ -1,0 +1,20 @@
+Ejecución,SQL Nativo (Caso 1),ORM de Django (Caso 3)
+1,0.634812 s,1.680341 s
+2,0.680249 s,1.601847 s
+3,0.641068 s,1.593341 s
+4,0.746548 s,1.671047 s
+5,0.680339 s,1.614764 s
+6,0.697184 s,1.655803 s
+7,0.727285 s,1.643472 s
+8,0.645339 s,1.604610 s
+9,0.718920 s,1.544517 s
+10,0.745458 s,1.590946 s
+Media,0.691720 s,1.620069 s
+Desv. Típica,± 0.042354 s,± 0.042066 s
+
+
+Para el Ejercicio 4 hemos medido cuánto tarda el sistema en consultar 1000 tarjetas de dos formas distintas, repitiendo la prueba 10 veces para mayor precisión. Usando el método de SQL nativo, el tiempo medio de respuesta fue de 0.69 segundos. Por otro lado, haciendo la misma consulta a través del ORM de Django, el tiempo medio subió a 1.62 segundos.
+
+Estos resultados demuestran claramente que el ORM añade una sobrecarga importante al sistema, haciéndolo más del doble de lento. Esto es normal y ocurre porque el ORM tiene que hacer mucho trabajo invisible: debe traducir las instrucciones de Python a código SQL y, cuando recibe los datos de la base de datos, tiene que gastar memoria y procesador en convertir cada registro en un objeto complejo de Python.
+
+Respecto a si las 10 repeticiones son suficientes, la respuesta es afirmativa. Al calcular la desviación típica, vemos que es pequeñísima en ambos casos (apenas 0.04 segundos). Esto significa que los tiempos han sido muy estables y no ha habido interferencias raras en la red ni tirones en el procesador. Al ser datos tan constantes, nos bastan para confirmar sin dudas que el ORM es más lento.
