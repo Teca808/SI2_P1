@@ -1,0 +1,17 @@
+models.py:
+Tabla Tarjeta: Explica que almacena los datos de seguridad y que el numero es la clave primaria (primary_key=True).
+
+Tabla Pago: Destaca que tiene una Clave Foránea (ForeignKey) que apunta a la tabla Tarjeta. Explica que esto asegura que no se pueda registrar un pago si la tarjeta no existe previamente.
+
+Restricción de Unicidad (UniqueConstraint): Menciona que has configurado el modelo para que no se puedan repetir pagos con el mismo idTransaccion e idComercio (esto evita cobros duplicados por error).
+
+
+PagoDB.py: 
+verificar_tarjeta: Comenta que utiliza los datos recibidos (número, nombre, CVV...) para buscar una coincidencia exacta en la BD mediante .filter(**tarjeta_data).exists().
+
+registrar_pago: Explica que esta función recibe un diccionario, crea el objeto Pago y gestiona posibles errores con un bloque try/except.
+
+get_pagos_from_db: Indica que sirve para filtrar el histórico de pagos según el identificador del comercio.
+
+
+Captura muestra que la base de datos coincide con lo definido en models
