@@ -2,21 +2,37 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.forms.models import model_to_dict
+import json
 from .pagoDB import verificar_tarjeta, registrar_pago, eliminar_pago, get_pagos_from_db
-from .serializers import PagoSerializer 
+from .serializers import PagoSerializer
 
 class TarjetaView(APIView):
     def post(self, request):
-        if verificar_tarjeta(request.data):
-            # Mensaje exacto que pide el test
+        datos = request.data
+        
+        if '_content' in datos:
+            try:
+                datos = json.loads(datos['_content'])
+            except:
+                pass
+                
+        if verificar_tarjeta(datos):
             return Response({'message': 'Datos encontrados en la base de datos'}, status=status.HTTP_200_OK)
         else:
-            # Mensaje exacto que pide el test
             return Response({'message': 'Datos no encontrados en la base de datos'}, status=status.HTTP_404_NOT_FOUND)
 
 class PagoView(APIView):
     def post(self, request):
-        pago = registrar_pago(request.data)
+        datos = request.data
+        
+        # PARCHE: Si viene de la web de Django, sacamos el JSON real
+        if '_content' in datos:
+            try:
+                datos = json.loads(datos['_content'])
+            except:
+                pass
+
+        pago = registrar_pago(datos)
         if pago is None:
             return Response({'message': 'Error al registrar pago.'}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -33,7 +49,6 @@ class ComercioView(APIView):
     def get(self, request, idComercio):
         pagos = get_pagos_from_db(idComercio)
         if pagos:
-            # Traducimos la lista de objetos de BD a JSON usando el Serializer
             serializer = PagoSerializer(pagos, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
